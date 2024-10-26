@@ -1,6 +1,8 @@
 package com.example;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,7 +29,13 @@ public class Booking extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		SWDB mediator = new SWDB();
+
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		out.write(mediator.getResult());
 	}
 
 	/**

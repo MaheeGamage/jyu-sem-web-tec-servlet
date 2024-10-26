@@ -21,6 +21,14 @@
 	</properties>
 
 	<dependencies>
+		<!-- Apache Jena dependency -->
+		<dependency>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>apache-jena-libs</artifactId>
+			<version>4.3.2</version> <!-- Use the latest version available -->
+			<type>pom</type>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
