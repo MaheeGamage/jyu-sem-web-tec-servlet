@@ -1,5 +1,7 @@
 package com.example;
 
+import java.util.Map;
+
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.query.Dataset;
@@ -19,7 +21,7 @@ public class SWDB {
 
 	private String queryResult;
 
-	public void searchForResult(String pathDB, String p1, String p2, String p3) {
+	public void searchForResult(String pathDB, Map<String, Map<String, String>> entityProperties) {
 
 		System.out.println("Do query...");
 
@@ -27,16 +29,9 @@ public class SWDB {
 		OntModelSpec ontModelSpec = OntModelSpec.OWL_DL_MEM;
 		OntModel ontModel = ModelFactory.createOntologyModel(ontModelSpec, model);
 
-		String queryString = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX e: <http://example.org/ex>\n" + "PREFIX b: <http://example.org/ItemOntology>\n"
-				+ "SELECT ?itemId \n" + "WHERE {  ?item rdf:type b:Item.\n" + "         ?item b:hasParam01 \"" + p1
-				+ "\".\n" + "         ?item b:hasParam02 \"" + p2 + "\".\n" + "         ?item b:hasParam03 \"" + p3
-				+ "\".\n" + "         ?item b:itemID ?itemId.\n" + "}";
-
-		String queryString_ = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
-				+ "PREFIX e: <http://example.org/ex>\n" + "PREFIX b: <http://example.org/ItemOntology>\n"
-				+ "SELECT ?itemId \n" + "WHERE {  ?item rdf:type b:Item.\n" + "         ?item b:hasParam01 \"" + p1
-				+ "\".\n" + "         ?item b:itemID ?itemId.\n" + "}";
+		String queryString = SparqlQueryBuilder.buildCottageSparqlQuery(entityProperties);
+		
+		System.out.println("queryString: ---\n" + queryString);
 
 		Dataset dataset = DatasetFactory.create(ontModel);
 		Query q = QueryFactory.create(queryString);
@@ -53,6 +48,54 @@ public class SWDB {
 		}
 		System.out.println("------------");
 
+	}
+	
+	public void search2(String pathDB) {
+		System.out.println("Do query...");
+
+		Model model = RDFDataMgr.loadModel(pathDB);
+		OntModelSpec ontModelSpec = OntModelSpec.OWL_DL_MEM;
+		OntModel ontModel = ModelFactory.createOntologyModel(ontModelSpec, model);
+
+//		String queryString = "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" + 
+//	       		"PREFIX e: <http://example.org/ex>\n" + 
+//	       		"PREFIX b: <http://example.org/ItemOntology>\n" + 
+//	       		"SELECT ?itemId \n" + 
+//	       		"WHERE {  ?item rdf:type b:Item.\n" + 
+//	       		"         ?item b:hasParam01 \""+1+"\".\n" + 
+//	       		"         ?item b:hasParam02 \""+2+"\".\n" + 
+//	       		"         ?item b:hasParam03 \""+3+"\".\n" + 
+//	       		"         ?item b:itemID ?itemId.\n" + 
+//	       		"}";
+		
+		String queryString = "PREFIX cb: <http://example.org/ex#>\n"
+				+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n"
+				+ "SELECT ?cottage\n"
+				+ "WHERE {\n"
+				+ "  ?cottage rdf:type cb:Cottage .\n"
+				+ "}";
+		
+		System.out.println("queryString: ---\n" + queryString);
+
+		Dataset dataset = DatasetFactory.create(ontModel);
+		Query q = QueryFactory.create(queryString);
+
+		QueryExecution qexec = QueryExecutionFactory.create(q, dataset);
+		ResultSet resultSet = qexec.execSelect();
+
+		System.out.println("Results: ---");
+		while (resultSet.hasNext()) {
+			QuerySolution row = (QuerySolution) resultSet.next();
+//			RDFNode nextItemId = row.get("itemId");
+//			System.out.print("ItemID is: " + nextItemId.toString() + ".\n");
+			
+		    row.varNames().forEachRemaining(varName -> {
+		        RDFNode node = row.get(varName);
+		        System.out.println(varName + ": " + (node != null ? node.toString() : "null"));
+		    });
+
+		}
+		System.out.println("------------");
 	}
 
 	public String getResult() {
