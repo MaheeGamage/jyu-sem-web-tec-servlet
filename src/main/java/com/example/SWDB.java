@@ -56,7 +56,7 @@ public class SWDB {
 	}
 
 	public String getResult() {
-		queryResult = "Done!";
+		queryResult = "Done !";
 		return queryResult;
 	}
 }
