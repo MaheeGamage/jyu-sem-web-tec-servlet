@@ -10,7 +10,7 @@ public class SparqlQueryBuilder {
     	
         // Initialize the SPARQL query with the PREFIX and SELECT clauses
         StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("PREFIX : <").append(baseUri).append(">\n");
+        queryBuilder.append("PREFIX cb: <").append(baseUri).append(">\n");
         queryBuilder.append("PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n");
         queryBuilder.append("SELECT ?cottage ?maxPeople ?bedrooms ?distanceFromLake ?address ?nearestCity ?distanceFromCity\n");
         queryBuilder.append("WHERE {\n");
@@ -23,7 +23,7 @@ public class SparqlQueryBuilder {
             // If the entity has specific predicates, add them in a single block
             StringJoiner predicateJoiner = new StringJoiner(" ;\n", "?"+entity+" ", " .\n");
             for (Map.Entry<String, String> predicateEntry : predicates.entrySet()) {
-                predicateJoiner.add(":" + predicateEntry.getKey() + " ?" + predicateEntry.getValue());
+                predicateJoiner.add("cb:" + predicateEntry.getKey() + " ?" + predicateEntry.getValue());
             }
 
             queryBuilder.append(predicateJoiner.toString());
