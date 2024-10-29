@@ -2,14 +2,14 @@ package com.example;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
 
 /**
  * Servlet implementation class Booking
@@ -33,7 +33,22 @@ public class Booking extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+//		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+        // Set the content type to JSON
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        // Create a sample object to return as JSON
+        BookingResponse myObject = new BookingResponse("example", 123);
+
+        // Convert the object to JSON using Gson
+        String json = new Gson().toJson(myObject);
+
+        // Write JSON to the response output
+        PrintWriter out = response.getWriter();
+        out.print(json);
+        out.flush();
 	}
 
 	/**
