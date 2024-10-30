@@ -1,6 +1,9 @@
 package com.example.model;
 
 import java.util.Map;
+import org.apache.jena.rdf.model.Literal;
+import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
 
 public class BookingSuggestionResponse {
 	// Fields based on requirements
@@ -34,15 +37,21 @@ public class BookingSuggestionResponse {
 	}
 
 	public BookingSuggestionResponse(Map<String, String> data) {
-		this.bookerName = data.getOrDefault("bookerName", null);
+		// Converting RDF values to java primitives
+        String maxPeopleNumericValueStr = data.getOrDefault("maxPeople", "0").split("\\^\\^")[0];
+        String bedroomsNumericValueStr = data.getOrDefault("bedrooms", "0").split("\\^\\^")[0];
+        String distanceToLakeNumericValueStr = data.getOrDefault("distanceFromLake", "0").split("\\^\\^")[0];
+        String distanceFromCityNumericValueStr = data.getOrDefault("distanceFromCity", "0").split("\\^\\^")[0];
+		
+//		this.bookerName = data.getOrDefault("bookerName", null);
 		this.bookingNumber = data.getOrDefault("bookingNumber", null);
 		this.cottageAddress = data.getOrDefault("address", null);
 		this.cottageImageUrl = data.getOrDefault("cottageImageUrl", null);
-//		this.numberOfPlaces = Integer.parseInt(data.getOrDefault("maxPeople", "0"));
-//		this.numberOfBedrooms = Integer.parseInt(data.getOrDefault("bedrooms", "0"));
-//		this.distanceToLake = Integer.parseInt(data.getOrDefault("distanceToLake", "0"));
+		this.numberOfPlaces = Integer.parseInt(maxPeopleNumericValueStr);
+		this.numberOfBedrooms = Integer.parseInt(bedroomsNumericValueStr);
+		this.distanceToLake = Integer.parseInt(distanceToLakeNumericValueStr);
 		this.nearestCity = data.getOrDefault("city", null);
-//		this.distanceToCity = Integer.parseInt(data.getOrDefault("distanceFromCity", "0"));
+		this.distanceToCity = Integer.parseInt(distanceFromCityNumericValueStr);
 		this.bookingStartDate = data.getOrDefault("bookingStartDate", null);
 		this.bookingEndDate = data.getOrDefault("bookingEndDate", null);
 	}
