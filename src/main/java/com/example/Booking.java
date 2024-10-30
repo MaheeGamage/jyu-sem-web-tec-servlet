@@ -89,20 +89,25 @@ public class Booking extends HttpServlet {
 		SWDB mediator = new SWDB();
 
 		if (request.getParameter("reqType").toString().equals("doQuery")) {
-//			String param01 = request.getParameter("param01").toString();
-//			String param02 = request.getParameter("param02").toString();
-//			String param03 = request.getParameter("param03").toString();
-
-			int peopleCount = Integer.parseInt(request.getParameter("peopleCount").toString());
+			RequestParams params = new RequestParams();
+			params.setName(request.getParameter("name"));
+			params.setNoOfPeople(Integer.parseInt(request.getParameter("peopleCount")));
+			params.setBedroomCount(Integer.parseInt(request.getParameter("bedroomCount")));
+			params.setMaxLakeDistance(Integer.parseInt(request.getParameter("maxLakeDistance")));
+			params.setCity(request.getParameter("city"));
+			params.setMaxCityDistance(Integer.parseInt(request.getParameter("maxCityDistance")));
+			params.setDayCount(Integer.parseInt(request.getParameter("dayCount")));
+			params.setStartDate(request.getParameter("startDate"));
+			params.setMaxDayShifts(Integer.parseInt(request.getParameter("maxDayShifts")));
 
 			String pathToDB = this.getServletContext().getRealPath("/res/Cottages.ttl");
-			mediator.searchForResult(pathToDB, peopleCount);
+			mediator.searchForResult(pathToDB, params);
 		}
+
 
 		PrintWriter out = response.getWriter();
 		out.write(mediator.getResult());
 		out.flush();
 		out.close();
 	}
-
 }
