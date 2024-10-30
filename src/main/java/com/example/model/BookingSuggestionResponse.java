@@ -1,5 +1,7 @@
 package com.example.model;
 
+import java.util.Map;
+
 public class BookingSuggestionResponse {
 	// Fields based on requirements
 	private String bookerName;
@@ -29,6 +31,20 @@ public class BookingSuggestionResponse {
 		this.distanceToCity = distanceToCity;
 		this.bookingStartDate = bookingStartDate;
 		this.bookingEndDate = bookingEndDate;
+	}
+
+	public BookingSuggestionResponse(Map<String, String> data) {
+		this.bookerName = data.getOrDefault("bookerName", null);
+		this.bookingNumber = data.getOrDefault("bookingNumber", null);
+		this.cottageAddress = data.getOrDefault("cottageAddress", null);
+		this.cottageImageUrl = data.getOrDefault("cottageImageUrl", null);
+		this.numberOfPlaces = Integer.parseInt(data.getOrDefault("numberOfPlaces", "0"));
+		this.numberOfBedrooms = Integer.parseInt(data.getOrDefault("numberOfBedrooms", "0"));
+		this.distanceToLake = Integer.parseInt(data.getOrDefault("distanceToLake", "0"));
+		this.nearestCity = data.getOrDefault("nearestCity", null);
+		this.distanceToCity = Integer.parseInt(data.getOrDefault("distanceToCity", "0"));
+		this.bookingStartDate = data.getOrDefault("bookingStartDate", null);
+		this.bookingEndDate = data.getOrDefault("bookingEndDate", null);
 	}
 
 	// Getters and Setters

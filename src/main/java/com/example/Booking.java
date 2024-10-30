@@ -21,6 +21,8 @@ import com.example.model.BookingSuggestionResponse;
 public class Booking extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	ArrayList<BookingSuggestionResponse> bookingList = new ArrayList<>();
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -43,7 +45,6 @@ public class Booking extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 
 		// Create a sample object to return as JSON
-		ArrayList<BookingSuggestionResponse> bookingList = new ArrayList<>();
 		bookingList.add(new BookingSuggestionResponse("Alice Johnson", // name of the booker
 				"BK-20241029-67890", // booking number
 				"456 Mountain View Drive", // address of the cottage
@@ -105,7 +106,8 @@ public class Booking extends HttpServlet {
 		}
 
 		PrintWriter out = response.getWriter();
-		out.write(mediator.getResult());
+		bookingList.add(mediator.getResult());
+		out.write(bookingList.toString());
 		out.flush();
 		out.close();
 	}

@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.model.BookingSuggestionResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -18,11 +19,15 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.riot.RDFDataMgr;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.example.query.Query1;
 
 public class SWDB {
 
-	private String queryResult;
+	BookingSuggestionResponse bookingSuggestion;
 
 	public void searchForResult(String pathDB, RequestParams params) {
 		System.out.println("Do query...");
@@ -39,23 +44,25 @@ public class SWDB {
 		QueryExecution qexec = QueryExecutionFactory.create(q, dataset);
 		ResultSet resultSet = qexec.execSelect();
 
-		JsonArray resultsArray = new JsonArray();
+		ArrayList<BookingSuggestionResponse> bookingList = new ArrayList<>();
 		while (resultSet.hasNext()) {
 			QuerySolution row = resultSet.next();
-			JsonObject jsonRow = new JsonObject();
+			Map<String, String> rowData = new HashMap<>();
+
 			row.varNames().forEachRemaining(varName -> {
 				RDFNode node = row.get(varName);
-				jsonRow.addProperty(varName, (node != null ? node.toString() : "null"));
+				rowData.put(varName, (node != null ? node.toString() : "null"));
 			});
-			resultsArray.add(jsonRow);
+
+			bookingSuggestion = new BookingSuggestionResponse(rowData);
+			bookingList.add(bookingSuggestion);
 		}
 
-		Gson gson = new Gson();
-		this.queryResult = gson.toJson(resultsArray);
-		System.out.println("JSON Result: ---\n" + this.queryResult);
+		//Gson gson = new Gson();
+		System.out.println("BookingSuggestion: ---\n" + this.bookingSuggestion);
 	}
 
-	public String getResult() {
-		return this.queryResult != null ? this.queryResult : "No result available.";
+	public BookingSuggestionResponse getResult() {
+		return bookingSuggestion;
 	}
 }
