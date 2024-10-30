@@ -46,6 +46,9 @@ public class SWDB {
 		while (resultSet.hasNext()) {
 			QuerySolution row = resultSet.next();
 			Map<String, String> rowData = new HashMap<>();
+			
+			// Adding booker's name
+			rowData.put("bookerName", params.getName());
 
 			row.varNames().forEachRemaining(varName -> {
 				RDFNode node = row.get(varName);

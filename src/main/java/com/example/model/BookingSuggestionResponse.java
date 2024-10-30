@@ -43,7 +43,7 @@ public class BookingSuggestionResponse {
         String distanceToLakeNumericValueStr = data.getOrDefault("distanceFromLake", "0").split("\\^\\^")[0];
         String distanceFromCityNumericValueStr = data.getOrDefault("distanceFromCity", "0").split("\\^\\^")[0];
 		
-//		this.bookerName = data.getOrDefault("bookerName", null);
+		this.bookerName = data.getOrDefault("bookerName", null);
 		this.bookingNumber = data.getOrDefault("bookingNumber", null);
 		this.cottageAddress = data.getOrDefault("address", null);
 		this.cottageImageUrl = data.getOrDefault("cottageImageUrl", null);
