@@ -39,18 +39,22 @@ function doQuery() {
 
 function doQuery_back(result) {
 	try {
+		// Parse the result to ensure it's a JSON object
 		const parsedResult = JSON.parse(result);
 
+		// Check if the parsed result is an array
 		if (!Array.isArray(parsedResult)) {
 			throw new Error('Result is not an array');
 		}
 
+		// Check if each item in the array is an object
 		parsedResult.forEach(item => {
 			if (typeof item !== 'object' || item === null) {
 				throw new Error('Array contains non-object elements');
 			}
 		});
 
+		// If all validations pass, proceed to display the bookings
 		const container = document.getElementById('booking-suggestion-container');
 		container.innerHTML = ''; // Clear previous content
 
