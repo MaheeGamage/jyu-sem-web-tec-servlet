@@ -104,7 +104,6 @@ public class Booking extends HttpServlet {
 			mediator.searchForResult(pathToDB, params);
 		}
 
-
 		PrintWriter out = response.getWriter();
 		out.write(mediator.getResult());
 		out.flush();
