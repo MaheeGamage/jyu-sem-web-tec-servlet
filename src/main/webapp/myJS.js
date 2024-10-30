@@ -63,7 +63,7 @@ function doQuery_back(result) {
 			bookingDiv.classList.add('booking');
 
 			bookingDiv.innerHTML = `
-                <h2>${booking.bookerName}</h2>
+				<p>Name of the Booker: ${booking.bookerName}</p>
                 <p>Booking Number: ${booking.bookingNumber}</p>
                 <p>Address: ${booking.cottageAddress}</p>
                 <img src="${booking.cottageImageUrl}" alt="Cottage Image">

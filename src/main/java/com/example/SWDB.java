@@ -19,6 +19,8 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.riot.RDFDataMgr;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +28,14 @@ import java.util.Map;
 import com.example.query.Query3;
 
 public class SWDB {
+	
+	static final int bookingIdStart = 1000;
 
 	public ArrayList<BookingSuggestionResponse> searchForResult(String pathDB, RequestParams params) {
+		//Calculate booking end date
+		LocalDate bookingRequestStartDate = LocalDate.parse(params.getStartDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate bookingRequestEndDate = bookingRequestStartDate.plusDays(params.getDayCount());
+		
 		System.out.println("Do query...");
 
 		Model model = RDFDataMgr.loadModel(pathDB);
@@ -42,6 +50,7 @@ public class SWDB {
 		QueryExecution qexec = QueryExecutionFactory.create(q, dataset);
 		ResultSet resultSet = qexec.execSelect();
 
+		int tempBookingId = bookingIdStart;
 		ArrayList<BookingSuggestionResponse> bookingList = new ArrayList<>();
 		while (resultSet.hasNext()) {
 			QuerySolution row = resultSet.next();
@@ -49,6 +58,9 @@ public class SWDB {
 			
 			// Adding booker's name
 			rowData.put("bookerName", params.getName());
+			rowData.put("bookingNumber", String.valueOf(++tempBookingId));
+			rowData.put("bookingStartDate", params.getStartDate());
+			rowData.put("bookingEndDate", bookingRequestEndDate.toString());
 
 			row.varNames().forEachRemaining(varName -> {
 				RDFNode node = row.get(varName);
