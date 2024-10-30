@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.query.Query2;
+import com.example.query.Query3;
 
 public class SWDB {
 
@@ -34,7 +34,7 @@ public class SWDB {
 		OntModelSpec ontModelSpec = OntModelSpec.OWL_DL_MEM;
 		OntModel ontModel = ModelFactory.createOntologyModel(ontModelSpec, model);
 
-		String queryString = new Query2().generateQuery(params);
+		String queryString = new Query3().generateQuery(params);
 		System.out.println("queryString: ---\n" + queryString);
 
 		Dataset dataset = DatasetFactory.create(ontModel);

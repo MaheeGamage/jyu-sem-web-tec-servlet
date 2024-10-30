@@ -102,7 +102,7 @@ public class Booking extends HttpServlet {
 			params.setMaxDayShifts(Integer.parseInt(request.getParameter("maxDayShifts")));
 
 //			String pathToDB = this.getServletContext().getRealPath("/res/Cottages.ttl");
-			String pathToDB = this.getServletContext().getRealPath("/res/cottagebookingv2.ttl");
+			String pathToDB = this.getServletContext().getRealPath("/res/cottagebookingv3.ttl");
 			results = mediator.searchForResult(pathToDB, params);
 		}
 		
