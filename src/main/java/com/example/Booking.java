@@ -21,8 +21,6 @@ import com.example.model.BookingSuggestionResponse;
 public class Booking extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	ArrayList<BookingSuggestionResponse> bookingList = new ArrayList<>();
-
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -44,6 +42,7 @@ public class Booking extends HttpServlet {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 
+		ArrayList<BookingSuggestionResponse> bookingList = new ArrayList<>();
 		// Create a sample object to return as JSON
 		bookingList.add(new BookingSuggestionResponse("Alice Johnson", // name of the booker
 				"BK-20241029-67890", // booking number
@@ -88,6 +87,7 @@ public class Booking extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		SWDB mediator = new SWDB();
+		ArrayList<BookingSuggestionResponse> results = new ArrayList<>();
 
 		if (request.getParameter("reqType").toString().equals("doQuery")) {
 			RequestParams params = new RequestParams();
@@ -101,14 +101,17 @@ public class Booking extends HttpServlet {
 			params.setStartDate(request.getParameter("startDate"));
 			params.setMaxDayShifts(Integer.parseInt(request.getParameter("maxDayShifts")));
 
-			String pathToDB = this.getServletContext().getRealPath("/res/Cottages.ttl");
-			mediator.searchForResult(pathToDB, params);
+//			String pathToDB = this.getServletContext().getRealPath("/res/Cottages.ttl");
+			String pathToDB = this.getServletContext().getRealPath("/res/cottagebookingv2.ttl");
+			results = mediator.searchForResult(pathToDB, params);
 		}
+		
+		// Convert the object to JSON using Gson
+		String json = new Gson().toJson(results);
 
+		// Write JSON to the response output
 		PrintWriter out = response.getWriter();
-		bookingList.add(mediator.getResult());
-		out.write(bookingList.toString());
+		out.print(json);
 		out.flush();
-		out.close();
 	}
 }

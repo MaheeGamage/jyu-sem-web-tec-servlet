@@ -23,20 +23,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.example.query.Query1;
+import com.example.query.Query2;
 
 public class SWDB {
 
-	BookingSuggestionResponse bookingSuggestion;
-
-	public void searchForResult(String pathDB, RequestParams params) {
+	public ArrayList<BookingSuggestionResponse> searchForResult(String pathDB, RequestParams params) {
 		System.out.println("Do query...");
 
 		Model model = RDFDataMgr.loadModel(pathDB);
 		OntModelSpec ontModelSpec = OntModelSpec.OWL_DL_MEM;
 		OntModel ontModel = ModelFactory.createOntologyModel(ontModelSpec, model);
 
-		String queryString = new Query1().generateQuery(params);
+		String queryString = new Query2().generateQuery(params);
 		System.out.println("queryString: ---\n" + queryString);
 
 		Dataset dataset = DatasetFactory.create(ontModel);
@@ -54,15 +52,24 @@ public class SWDB {
 				rowData.put(varName, (node != null ? node.toString() : "null"));
 			});
 
-			bookingSuggestion = new BookingSuggestionResponse(rowData);
-			bookingList.add(bookingSuggestion);
+			bookingList.add(new BookingSuggestionResponse(rowData));
 		}
 
-		//Gson gson = new Gson();
-		System.out.println("BookingSuggestion: ---\n" + this.bookingSuggestion);
+		return bookingList;
 	}
 
 	public BookingSuggestionResponse getResult() {
-		return bookingSuggestion;
+		return new BookingSuggestionResponse("Alice Johnson", // name of the booker
+				"BK-20241029-67890", // booking number
+				"456 Mountain View Drive", // address of the cottage
+				"http://example.com/mountain.jpg", // image of the cottage
+				8, // actual number of places
+				4, // actual number of bedrooms
+				100, // distance to lake in meters
+				"Evergreen City", // nearest city
+				30, // distance to nearest city in km
+				"2024-12-15", // booking start date
+				"2024-12-25" // booking end date
+		);
 	}
 }
